@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardedCounter.Core", "Shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardedCounter.Core.Benchmarks", "ShardedCounter.Core.Benchmarks\ShardedCounter.Core.Benchmarks.csproj", "{C439F8F0-07C2-4C56-9770-2DFCDE3F1D13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardedCounter.Core.Tests", "ShardedCounter.Core.Tests\ShardedCounter.Core.Tests.csproj", "{5DAFC91F-FDDF-4961-B2B0-1754133B1A4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C439F8F0-07C2-4C56-9770-2DFCDE3F1D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C439F8F0-07C2-4C56-9770-2DFCDE3F1D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C439F8F0-07C2-4C56-9770-2DFCDE3F1D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DAFC91F-FDDF-4961-B2B0-1754133B1A4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DAFC91F-FDDF-4961-B2B0-1754133B1A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DAFC91F-FDDF-4961-B2B0-1754133B1A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DAFC91F-FDDF-4961-B2B0-1754133B1A4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
