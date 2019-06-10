@@ -1,4 +1,6 @@
 ![logo](https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/media/logo.png)
+[![Build Status](https://travis-ci.org/Jac21/ShardedCounter.Core.svg?branch=master)](https://travis-ci.org/Jac21/ShardedCounter.Core)
+
 
 🎰 Simplistic, atomic, interlocked counter that allows for huge numbers of operations to be performed using a "sharding" style approach to summation, all in .NET Core C#
 
