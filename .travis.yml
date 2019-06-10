@@ -7,7 +7,7 @@ dotnet: 2.2
 script:
   - dotnet restore
   - dotnet build
-  - dotnet test ShardedCounter.Core.Tests/ShardedCounter.Core.Tests.csproj
+  - dotnet test ShardedCounter.Core.Unit.Tests/ShardedCounter.Core.Unit.Tests.csproj
 
 global:
   - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
