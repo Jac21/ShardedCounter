@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/Jac21/ShardedCounter.Core</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/media/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>🎰 Simplistic, atomic, interlocked counter that allows for huge numbers of operations to be performed using a "sharding" style approach to summation, all in .NET Core C#</description>
     <releaseNotes>Initial release.</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Counter Threaded Atomic Sharding Interlocked Multithreading</tags>
