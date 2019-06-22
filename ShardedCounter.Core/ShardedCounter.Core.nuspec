@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ShardedCounter.Core</id>
+    <version>1.0.0</version>
+    <title>ShardedCounter.Core</title>
+    <authors>Jac21</authors>
+    <owners>Jac21</owners>
+    <licenseUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/Jac21/ShardedCounter.Core</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/media/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Counter Threaded Atomic Sharding Interlocked Multithreading</tags>
+  </metadata>
+  <files>
+    <!-- Add a README -->
+    <file src="../README.md" target=""/>
+  </files>
+</package>

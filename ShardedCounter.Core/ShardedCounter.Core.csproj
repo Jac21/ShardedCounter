@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Description>🎰 Simplistic, atomic, interlocked counter that allows for huge numbers of operations to be performed using a "sharding" style approach to summation, all in .NET Core C#</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jeremy Cantu</Authors>
+    <Company>Jeremy Cantu</Company>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Jac21/ShardedCounter.Core</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/media/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Jac21/ShardedCounter.Core</RepositoryUrl>
+    <PackageTags>Counter Threaded Atomic Sharding Interlocked Multithreading</PackageTags>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
