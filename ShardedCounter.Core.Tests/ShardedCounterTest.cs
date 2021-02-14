@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Shouldly;
 
-namespace ShardedCounter.Core.Tests
+namespace ShardedCounter.Core.Unit.Tests
 {
     /// <summary>
     /// ShardedCounter structure basic operations testing
@@ -13,7 +13,7 @@ namespace ShardedCounter.Core.Tests
         public void ShardedCounterIncreaseByOne()
         {
             // arrange
-            ShardedCounter shardedCounter = new ShardedCounter();
+            var shardedCounter = new ShardedCounter();
 
             // act
             shardedCounter.Increase(1L);
@@ -27,23 +27,24 @@ namespace ShardedCounter.Core.Tests
         {
             // arrange
             const long increasedCounterValue = 4999999950000000L;
-            ShardedCounter shardedCounter = new ShardedCounter();
+            var shardedCounter = new ShardedCounter();
 
             // act
-            for (int i = 0; i < 100000000; i++)
+            for (var i = 0; i < 100000000; i++)
             {
                 shardedCounter.Increase(i);
             }
 
             // assert
-            shardedCounter.Count.ShouldBe(increasedCounterValue, "ShardedCounter did not increase one hundred million times.");
+            shardedCounter.Count.ShouldBe(increasedCounterValue,
+                "ShardedCounter did not increase one hundred million times.");
         }
 
         [Test]
         public void ShardedCounterDecreaseByOne()
         {
             // arrange
-            ShardedCounter shardedCounter = new ShardedCounter();
+            var shardedCounter = new ShardedCounter();
 
             // act
             shardedCounter.Decrease(-1L);
@@ -57,12 +58,12 @@ namespace ShardedCounter.Core.Tests
         {
             // arrange
             const long increasedCounterValue = 4999999950000000L;
-            ShardedCounter shardedCounter = new ShardedCounter();
+            var shardedCounter = new ShardedCounter();
 
             // act
             shardedCounter.Increase(increasedCounterValue);
 
-            for (int i = 0; i < 100000000; i++)
+            for (var i = 0; i < 100000000; i++)
             {
                 shardedCounter.Decrease(i);
             }

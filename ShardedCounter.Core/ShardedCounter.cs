@@ -54,6 +54,7 @@ namespace ShardedCounter.Core
 
             counter.Decrease(amount);
         }
+
         /// <summary>
         /// Current count of the sharded counter, which involves summing 
         /// the counts in all the shards.
@@ -62,9 +63,9 @@ namespace ShardedCounter.Core
         {
             get
             {
-                // sum over all the shards, and clean up dead shards at the 
-                // same time
-                long sum = _deadShardSum;
+                // sum over all the shards, and clean up dead shards at the same time
+                var sum = _deadShardSum;
+
                 var livingShards = new List<Shard>();
 
                 lock (_shardedCounterLock)
