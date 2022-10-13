@@ -1,15 +1,13 @@
-using NUnit.Framework;
-using Shouldly;
+using BenchmarkDotNet.Attributes;
 
-namespace ShardedCounter.Core.Unit.Tests;
+namespace ShardedCounter.Core.Benchmarks;
 
 /// <summary>
-/// ShardedCounter structure basic operations testing
+/// ShardedCounter structure basic benchmark testing
 /// </summary>
-[TestFixture]
-public class ShardedCounterTest
+public class ShardedCounterBenchmarks
 {
-    [Test]
+    [Benchmark]
     public void ShardedCounterIncreaseByOne()
     {
         // arrange
@@ -17,16 +15,12 @@ public class ShardedCounterTest
 
         // act
         shardedCounter.Increase(1L);
-
-        // assert
-        shardedCounter.Count.ShouldBe(1L, "ShardedCounter did not increase by one.");
     }
 
-    [Test]
+    [Benchmark]
     public void ShardedCounterIncreaseByOneHundredMillion()
     {
         // arrange
-        const long increasedCounterValue = 4999999950000000L;
         var shardedCounter = new ShardedCounter();
 
         // act
@@ -34,13 +28,9 @@ public class ShardedCounterTest
         {
             shardedCounter.Increase(i);
         }
-
-        // assert
-        shardedCounter.Count.ShouldBe(increasedCounterValue,
-            "ShardedCounter did not increase one hundred million times.");
     }
 
-    [Test]
+    [Benchmark]
     public void ShardedCounterDecreaseByOne()
     {
         // arrange
@@ -48,12 +38,9 @@ public class ShardedCounterTest
 
         // act
         shardedCounter.Decrease(-1L);
-
-        // assert
-        shardedCounter.Count.ShouldBe(-1L, "ShardedCounter did not decrease by one.");
     }
 
-    [Test]
+    [Benchmark]
     public void ShardedCounterDecreaseByOneHundredMillion()
     {
         // arrange
@@ -67,8 +54,5 @@ public class ShardedCounterTest
         {
             shardedCounter.Decrease(i);
         }
-
-        // assert
-        shardedCounter.Count.ShouldBe(0L, "ShardedCounter did not decrease one hundred million times.");
     }
 }

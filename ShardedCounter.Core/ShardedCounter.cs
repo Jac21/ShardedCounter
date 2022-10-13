@@ -16,7 +16,7 @@ namespace ShardedCounter.Core
         /// <summary>
         /// Protects deadShardSum and shards
         /// </summary>
-        private readonly object _shardedCounterLock = new object();
+        private readonly object _shardedCounterLock = new();
 
         /// <summary>
         /// The total sum from the shards from the threads which have terminated
@@ -26,7 +26,7 @@ namespace ShardedCounter.Core
         /// <summary>
         /// The list of shards
         /// </summary>
-        private List<Shard> _shards = new List<Shard>();
+        private List<Shard> _shards = new();
 
         /// <summary>
         /// The thread-local slot where shards are stored
@@ -97,7 +97,7 @@ namespace ShardedCounter.Core
         /// <returns></returns>
         private Shard IncreaseCounter()
         {
-            if (!(Thread.GetData(_slot) is Shard counter))
+            if (Thread.GetData(_slot) is not Shard counter)
             {
                 counter = new Shard
                 {

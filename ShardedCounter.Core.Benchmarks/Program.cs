@@ -1,12 +1,11 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
 
-namespace ShardedCounter.Core.Benchmarks
+namespace ShardedCounter.Core.Benchmarks;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        var summary = BenchmarkRunner.Run(typeof(Program).Assembly);
     }
 }
