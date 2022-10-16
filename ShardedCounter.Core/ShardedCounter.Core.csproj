@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
     <Description>🎰 Simplistic, atomic, interlocked counter that allows for huge numbers of operations to be performed using a "sharding" style approach to summation, all in .NET Core C#</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jeremy Cantu</Authors>
@@ -14,7 +13,12 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <Version>2.0.0</Version>
     <PackageId>ShardedCounter</PackageId>
-    <PackageVersion>6.0.0</PackageVersion>
+    <PackageVersion>6.0.1</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>    
+    
+    <DebugType>embedded</DebugType>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
 </Project>
