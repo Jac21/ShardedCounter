@@ -2,7 +2,7 @@
 
 [![NuGet Status](http://img.shields.io/nuget/v/ShardedCounter.svg?style=flat)](https://www.nuget.org/packages/ShardedCounter/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
-[![Build Status](https://travis-ci.org/Jac21/ShardedCounter.Core.svg?branch=master)](https://travis-ci.org/Jac21/ShardedCounter.Core)
+[![Build Status](https://app.travis-ci.com/Jac21/ShardedCounter.svg?token=C2g4zraa9aMphS3q4ssZ&branch=master)](https://app.travis-ci.com/Jac21/ShardedCounter)
 [![donate](https://img.shields.io/badge/%24-Buy%20me%20a%20coffee-ff69b4.svg?style=flat)](https://www.buymeacoffee.com/jac21)
 
 🎰 Simplistic, atomic, interlocked counter that allows for huge numbers of operations to be performed using a "sharding" style approach to summation, all in .NET Core C#
