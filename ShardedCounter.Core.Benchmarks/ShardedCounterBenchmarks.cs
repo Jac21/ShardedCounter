@@ -1,58 +1,57 @@
 using BenchmarkDotNet.Attributes;
+using System.Threading;
 
 namespace ShardedCounter.Core.Benchmarks;
 
-/// <summary>
-/// ShardedCounter structure basic benchmark testing
-/// </summary>
+[MemoryDiagnoser]
 public class ShardedCounterBenchmarks
 {
-    [Benchmark]
-    public void ShardedCounterIncreaseByOne()
+    private const int OperationsPerThread = 100_000;
+
+    [Params(1, 4, 8)]
+    public int ThreadCount { get; set; }
+
+    [Benchmark(Baseline = true)]
+    public long InterlockedCounterWriteHeavy()
     {
-        // arrange
-        var shardedCounter = new ShardedCounter();
+        var counter = new BaselineInterlockedCounter();
 
-        // act
-        shardedCounter.Increase(1L);
-    }
-
-    [Benchmark]
-    public void ShardedCounterIncreaseByOneHundredMillion()
-    {
-        // arrange
-        var shardedCounter = new ShardedCounter();
-
-        // act
-        for (var i = 0; i < 100000000; i++)
+        Parallel.For(0, ThreadCount, _ =>
         {
-            shardedCounter.Increase(i);
-        }
+            for (var i = 0; i < OperationsPerThread; i++)
+            {
+                counter.Increment();
+            }
+        });
+
+        return counter.Count;
     }
 
     [Benchmark]
-    public void ShardedCounterDecreaseByOne()
+    public long ShardedCounterWriteHeavy()
     {
-        // arrange
-        var shardedCounter = new ShardedCounter();
+        var counter = new ShardedCounter();
 
-        // act
-        shardedCounter.Decrease(-1L);
-    }
-
-    [Benchmark]
-    public void ShardedCounterDecreaseByOneHundredMillion()
-    {
-        // arrange
-        const long increasedCounterValue = 4999999950000000L;
-        var shardedCounter = new ShardedCounter();
-
-        // act
-        shardedCounter.Increase(increasedCounterValue);
-
-        for (var i = 0; i < 100000000; i++)
+        Parallel.For(0, ThreadCount, _ =>
         {
-            shardedCounter.Decrease(i);
-        }
+            for (var i = 0; i < OperationsPerThread; i++)
+            {
+                counter.Increment();
+            }
+        });
+
+        return counter.Count;
+    }
+}
+
+internal sealed class BaselineInterlockedCounter
+{
+    private long _count;
+
+    public long Count => Interlocked.Read(ref _count);
+
+    public void Increment()
+    {
+        Interlocked.Increment(ref _count);
     }
 }

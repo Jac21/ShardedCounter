@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using Shouldly;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace ShardedCounter.Core.Unit.Tests;
 
@@ -103,5 +105,66 @@ public class ShardedCounterTest
 
         // assert
         shardedCounter.Count.ShouldBe(0L, "ShardedCounter did not decrease one hundred million times.");
+    }
+
+    [Test]
+    public async Task ShardedCounterSupportsConcurrentWriters()
+    {
+        const int workerCount = 8;
+        const int iterationsPerWorker = 10_000;
+        var shardedCounter = new ShardedCounter();
+
+        var tasks = Enumerable.Range(0, workerCount)
+            .Select(_ => Task.Run(() =>
+            {
+                for (var i = 0; i < iterationsPerWorker; i++)
+                {
+                    shardedCounter.Increment();
+                }
+            }))
+            .ToArray();
+
+        await Task.WhenAll(tasks);
+
+        shardedCounter.Count.ShouldBe(workerCount * iterationsPerWorker,
+            "ShardedCounter did not preserve the expected total under concurrent writers.");
+    }
+
+    [Test]
+    public async Task ShardedCounterCountCanBeReadDuringConcurrentWrites()
+    {
+        const int workerCount = 4;
+        const int iterationsPerWorker = 5_000;
+        var shardedCounter = new ShardedCounter();
+        var observedCounts = new ConcurrentBag<long>();
+
+        var writerTasks = Enumerable.Range(0, workerCount)
+            .Select(_ => Task.Run(() =>
+            {
+                for (var i = 0; i < iterationsPerWorker; i++)
+                {
+                    shardedCounter.Increment();
+                }
+            }))
+            .ToArray();
+
+        var readerTask = Task.Run(async () =>
+        {
+            while (writerTasks.Any(task => !task.IsCompleted))
+            {
+                observedCounts.Add(shardedCounter.Count);
+                await Task.Yield();
+            }
+
+            observedCounts.Add(shardedCounter.Count);
+        });
+
+        await Task.WhenAll(writerTasks);
+        await readerTask;
+
+        observedCounts.ShouldNotBeEmpty("Expected to observe at least one count during concurrent writes.");
+        observedCounts.ShouldAllBe(count => count >= 0 && count <= workerCount * iterationsPerWorker);
+        shardedCounter.Count.ShouldBe(workerCount * iterationsPerWorker,
+            "ShardedCounter did not converge to the expected total after concurrent reads and writes.");
     }
 }
