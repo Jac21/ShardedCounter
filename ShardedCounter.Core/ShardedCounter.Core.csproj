@@ -5,20 +5,31 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jeremy Cantu</Authors>
     <Company>Jeremy Cantu</Company>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/LICENSE.md</PackageLicenseUrl>
+    <Copyright>Copyright Jeremy Cantu</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Jac21/ShardedCounter.Core</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Jac21/ShardedCounter.Core/master/media/logo.png</PackageIconUrl>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Jac21/ShardedCounter.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>Counter Threaded Atomic Sharding Interlocked Multithreading</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Version>2.0.0</Version>
+    <Version>6.0.1</Version>
     <PackageId>ShardedCounter</PackageId>
-    <PackageVersion>6.0.1</PackageVersion>
-    <TargetFramework>net6.0</TargetFramework>    
-    
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <EnablePackageValidation>true</EnablePackageValidation>
     <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\media\logo.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
 
 </Project>
