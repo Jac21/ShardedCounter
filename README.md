@@ -2,6 +2,7 @@
 
 [![NuGet Status](https://img.shields.io/nuget/v/ShardedCounter.svg?style=flat)](https://www.nuget.org/packages/ShardedCounter/)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://opensource.org/licenses/mit-license.php)
+[![CI](https://github.com/Jac21/ShardedCounter/actions/workflows/ci.yml/badge.svg)](https://github.com/Jac21/ShardedCounter/actions/workflows/ci.yml)
 
 Simplistic, atomic, interlocked counter that spreads writes across per-thread shards so concurrent updates do not all contend on a single shared value.
 
@@ -65,3 +66,14 @@ The library currently targets:
 - Writes are cheap because they stay on a thread-local shard.
 - Reads are more expensive because they sum all known shards.
 - This library is best suited to counters that are updated often and read occasionally.
+
+## Validation
+
+- Unit tests cover signed updates, compatibility APIs, and concurrent writer scenarios.
+- The benchmark project compares `ShardedCounter` against a plain `Interlocked` counter under multiple thread counts.
+
+Run the benchmarks with:
+
+```bash
+dotnet run -c Release --project ShardedCounter.Core.Benchmarks
+```

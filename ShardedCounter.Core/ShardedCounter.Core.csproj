@@ -7,24 +7,28 @@
     <Company>Jeremy Cantu</Company>
     <Copyright>Copyright Jeremy Cantu</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Jac21/ShardedCounter.Core</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Jac21/ShardedCounter</PackageProjectUrl>
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/Jac21/ShardedCounter.Core</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Jac21/ShardedCounter</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>Counter Threaded Atomic Sharding Interlocked Multithreading</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Modernized package metadata, added net8.0 support, introduced Add/Increment/Decrement APIs, and expanded concurrency validation.</PackageReleaseNotes>
     <Version>6.0.1</Version>
     <PackageId>ShardedCounter</PackageId>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DebugType>embedded</DebugType>
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <EnablePackageValidation>true</EnablePackageValidation>
     <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnableSourceLink>true</EnableSourceLink>
   </PropertyGroup>
 
   <ItemGroup>
