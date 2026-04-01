@@ -6,6 +6,8 @@ The format is based on Keep a Changelog, and versions should map to published Nu
 
 ## [Unreleased]
 
+## [6.0.2] - 2026-03-31
+
 ### Added
 - GitHub Actions CI workflow for restore, build, test, and pack validation.
 - GitHub Actions release workflow for tag-based NuGet publishing.
