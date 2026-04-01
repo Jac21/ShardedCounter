@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+
+      - name: Restore
+        run: dotnet restore ShardedCounter.Core.sln
+
+      - name: Build
+        run: dotnet build ShardedCounter.Core.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ShardedCounter.Core.sln --configuration Release --no-build
+
+      - name: Pack
+        run: dotnet pack ShardedCounter.Core/ShardedCounter.Core.csproj --configuration Release --no-build -o ./artifacts
+
+      - name: Publish packages to NuGet
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: artifacts/*

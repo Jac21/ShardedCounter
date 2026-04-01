@@ -1,8 +1,12 @@
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Jobs;
 using System.Threading;
 
 namespace ShardedCounter.Core.Benchmarks;
 
+[ShortRunJob]
+[MarkdownExporterAttribute.GitHub]
 [MemoryDiagnoser]
 public class ShardedCounterBenchmarks
 {
