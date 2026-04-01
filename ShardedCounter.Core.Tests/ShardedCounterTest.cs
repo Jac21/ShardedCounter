@@ -10,6 +10,29 @@ namespace ShardedCounter.Core.Unit.Tests;
 public class ShardedCounterTest
 {
     [Test]
+    public void ShardedCounterAddSignedAmount()
+    {
+        var shardedCounter = new ShardedCounter();
+
+        shardedCounter.Add(5L);
+        shardedCounter.Add(-2L);
+
+        shardedCounter.Count.ShouldBe(3L, "ShardedCounter did not apply signed deltas correctly.");
+    }
+
+    [Test]
+    public void ShardedCounterSupportsIncrementAndDecrement()
+    {
+        var shardedCounter = new ShardedCounter();
+
+        shardedCounter.Increment();
+        shardedCounter.Increment();
+        shardedCounter.Decrement();
+
+        shardedCounter.Count.ShouldBe(1L, "ShardedCounter increment/decrement helpers returned an unexpected total.");
+    }
+
+    [Test]
     public void ShardedCounterIncreaseByOne()
     {
         // arrange
@@ -51,6 +74,16 @@ public class ShardedCounterTest
 
         // assert
         shardedCounter.Count.ShouldBe(-1L, "ShardedCounter did not decrease by one.");
+    }
+
+    [Test]
+    public void ShardedCounterDecreaseByPositiveOne()
+    {
+        var shardedCounter = new ShardedCounter();
+
+        shardedCounter.Decrease(1L);
+
+        shardedCounter.Count.ShouldBe(-1L, "ShardedCounter did not normalize a positive decrease amount.");
     }
 
     [Test]

@@ -1,118 +1,139 @@
-﻿using ShardedCounter.Core.Interfaces;
+using ShardedCounter.Core.Interfaces;
 using ShardedCounter.Core.Structures;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ShardedCounter.Core
+namespace ShardedCounter.Core;
+
+/// <summary>
+/// A contention-friendly counter that spreads writes across thread-local shards
+/// and computes the current value by summing those shards when read.
+/// </summary>
+public class ShardedCounter : ICounter
 {
+    private readonly object _shardedCounterLock = new();
+    private readonly ThreadLocal<Shard?> _threadShard = new();
+    private long _deadShardSum;
+    private List<Shard> _shards = new();
+
     /// <summary>
-    /// ShardedCounter allocates a new thread-local storage slot via Thread.AllocateDataSlot(). 
-    /// This creates a place to store the counter shard for each thread. Operations include increasing and decreasing the
-    /// counter by a given amount, as well as reading the value of said counter.
+    /// Adds a signed delta to the current counter value.
+    /// Positive values increase the counter and negative values decrease it.
     /// </summary>
-    public class ShardedCounter : ICounter
+    /// <param name="amount">The signed amount to apply to the counter.</param>
+    public void Add(long amount)
     {
-        /// <summary>
-        /// Protects deadShardSum and shards
-        /// </summary>
-        private readonly object _shardedCounterLock = new();
-
-        /// <summary>
-        /// The total sum from the shards from the threads which have terminated
-        /// </summary>
-        private long _deadShardSum;
-
-        /// <summary>
-        /// The list of shards
-        /// </summary>
-        private List<Shard> _shards = new();
-
-        /// <summary>
-        /// The thread-local slot where shards are stored
-        /// </summary>
-        private readonly LocalDataStoreSlot _slot = Thread.AllocateDataSlot();
-
-        /// <summary>
-        /// Increase counter for this thread
-        /// </summary>
-        /// <param name="amount"></param>
-        public void Increase(long amount)
+        if (amount == 0)
         {
-            var counter = IncreaseCounter();
+            return;
+        }
 
+        var counter = GetOrCreateShard();
+
+        if (amount > 0)
+        {
             counter.Increase(amount);
+            return;
         }
 
-        /// <summary>
-        /// Decrease counter for this thread
-        /// </summary>
-        /// <param name="amount"></param>
-        public void Decrease(long amount)
-        {
-            var counter = IncreaseCounter();
+        counter.Decrease(amount);
+    }
 
-            counter.Decrease(amount);
+    /// <summary>
+    /// Increases the counter by the supplied amount.
+    /// </summary>
+    /// <param name="amount">The amount to increase the counter by.</param>
+    public void Increase(long amount)
+    {
+        Add(amount);
+    }
+
+    /// <summary>
+    /// Decreases the counter by the supplied amount.
+    /// Positive or negative values both reduce the counter.
+    /// </summary>
+    /// <param name="amount">The amount to decrease the counter by.</param>
+    public void Decrease(long amount)
+    {
+        if (amount == 0)
+        {
+            return;
         }
 
-        /// <summary>
-        /// Current count of the sharded counter, which involves summing 
-        /// the counts in all the shards.
-        /// </summary>
-        public long Count
+        if (amount == long.MinValue)
         {
-            get
+            Add(long.MinValue);
+            return;
+        }
+
+        Add(-Math.Abs(amount));
+    }
+
+    /// <summary>
+    /// Increments the counter by one.
+    /// </summary>
+    public void Increment()
+    {
+        Add(1);
+    }
+
+    /// <summary>
+    /// Decrements the counter by one.
+    /// </summary>
+    public void Decrement()
+    {
+        Add(-1);
+    }
+
+    /// <summary>
+    /// Gets the current total across all live and retired shards.
+    /// </summary>
+    public long Count
+    {
+        get
+        {
+            var sum = _deadShardSum;
+            var livingShards = new List<Shard>();
+
+            lock (_shardedCounterLock)
             {
-                // sum over all the shards, and clean up dead shards at the same time
-                var sum = _deadShardSum;
-
-                var livingShards = new List<Shard>();
-
-                lock (_shardedCounterLock)
+                foreach (var shard in _shards)
                 {
-                    foreach (var shard in _shards)
+                    sum += shard.Count;
+
+                    if (shard.IsOwnerAlive)
                     {
-                        sum += shard.Count;
-
-                        if (shard.Owner.IsAlive)
-                        {
-                            livingShards.Add(shard);
-                        }
-                        else
-                        {
-                            _deadShardSum += shard.Count;
-                        }
+                        livingShards.Add(shard);
                     }
-
-                    _shards = livingShards;
+                    else
+                    {
+                        _deadShardSum += shard.Count;
+                    }
                 }
 
-                return sum;
+                _shards = livingShards;
             }
+
+            return sum;
         }
+    }
 
-        /// <summary>
-        /// Increase counter for this particular thread
-        /// </summary>
-        /// <returns></returns>
-        private Shard IncreaseCounter()
+    private Shard GetOrCreateShard()
+    {
+        if (_threadShard.Value is { } counter)
         {
-            if (Thread.GetData(_slot) is not Shard counter)
-            {
-                counter = new Shard
-                {
-                    Owner = Thread.CurrentThread
-                };
-
-                Thread.SetData(_slot, counter);
-
-                lock (_shardedCounterLock)
-                {
-                    _shards.Add(counter);
-                }
-            }
-
             return counter;
         }
+
+        counter = new Shard(Thread.CurrentThread);
+        _threadShard.Value = counter;
+
+        lock (_shardedCounterLock)
+        {
+            _shards.Add(counter);
+        }
+
+        return counter;
     }
 }

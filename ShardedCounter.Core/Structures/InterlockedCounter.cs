@@ -2,22 +2,32 @@
 using System;
 using System.Threading;
 
-namespace ShardedCounter.Core.Structures
+namespace ShardedCounter.Core.Structures;
+
+internal class InterlockedCounter : ICounter
 {
-    internal class InterlockedCounter : ICounter
+    private long _count;
+
+    public long Count => Interlocked.Read(ref _count);
+
+    public void Add(long amount)
     {
-        private long _count;
+        Interlocked.Add(ref _count, amount);
+    }
 
-        public long Count => Interlocked.CompareExchange(ref _count, 0, 0);
+    public void Increase(long amount)
+    {
+        Add(amount);
+    }
 
-        public void Increase(long amount)
+    public void Decrease(long amount)
+    {
+        if (amount == long.MinValue)
         {
-            Interlocked.Add(ref _count, amount);
+            Add(long.MinValue);
+            return;
         }
 
-        public void Decrease(long amount)
-        {
-            Interlocked.Add(ref _count, -Math.Abs(amount));
-        }
+        Add(-Math.Abs(amount));
     }
 }

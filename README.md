@@ -28,8 +28,10 @@ using ShardedCounter.Core;
 
 var counter = new ShardedCounter();
 
-counter.Increase(5);
-counter.Decrease(2);
+counter.Add(5);
+counter.Add(-2);
+counter.Increment();
+counter.Decrement();
 
 Console.WriteLine(counter.Count); // 3
 ```
@@ -39,11 +41,17 @@ Console.WriteLine(counter.Count); // 3
 ```csharp
 public class ShardedCounter
 {
+    public void Add(long amount);
     public void Increase(long amount);
     public void Decrease(long amount);
+    public void Increment();
+    public void Decrement();
     public long Count { get; }
 }
 ```
+
+`Add(long amount)` is the recommended API because it makes signed counter updates explicit.
+`Increase` and `Decrease` remain available as convenience and compatibility methods.
 
 ## Target frameworks
 
